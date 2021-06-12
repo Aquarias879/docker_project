@@ -3,22 +3,28 @@
 # Docker Command
 
 #build compose
-$ docker-Compose build
+
+$docker-Compose build
 
 #run docker compose
-$ docker-compose up
+
+$docker-compose up
 
 #stop docker
-$ docker-compose down
+
+$docker-compose down
 
 #access a running container
-$ dokcer exec -it $service id bin/bash
+
+$dokcer exec -it $service id bin/bash
 
 #start only 1 service
-$ docker start $service id
+
+$docker start $service id
 
 #close only 1 service
-$ docker stop $service id
+
+$docker stop $service id
 
 #apidocs here
 http://localhost:5000/apidocs
