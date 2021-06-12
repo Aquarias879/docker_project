@@ -1,0 +1,97 @@
+version: "3.2"
+
+services:
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://192.168.0.45:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    ports:
+      - 80:80
+    links:
+      - create_user
+      - list_user
+    extra_hosts:
+      - "my-host:192.168.0.45"
+
+  data:
+    container_name: data_s
+    build: data/
+    depends_on:
+      - "rabbitmq"
+    restart: on-failure
+    links:
+      - "rabbitmq"
+      - "mongodb1"
+
+  create_user:
+    container_name: login
+    build: login/
+    ports:
+      - 5000:5000
+    depends_on:
+      - "rabbitmq"
+    links:
+      - "rabbitmq"
+
+  list_user:
+    container_name: list_user
+    build: list_user/
+    ports:
+      - 5001:5001
+    depends_on:
+      - "mongodb2"
+    links:
+      - "mongodb2"
+
+  mongodb1:
+    container_name: insert-mongodb1
+    image: mongo:4.2
+    command: mongod --replSet RS --port 27041 --dbpath /data/db --config /resource/mongod.yml
+    ports:
+      - 27017:27041
+    volumes:
+      - ./mongodb/mongod.yml:/resource/mongod.yml
+      - ./mongodb/data/insert-mongodb1:/data/db
+    networks:
+      - my-mongo-cluster
+
+  mongodb2:
+    container_name: query-mongodb2
+    image: mongo:4.2
+    command: mongod --replSet RS --port 27041 --dbpath /data/db --config /resource/mongod.yml
+    ports:
+      - 27018:27041
+    volumes:
+      - ./mongodb/mongod.yml:/resource/mongod.yml
+      - ./mongodb/data/query-mongodb2:/data/db
+    networks:
+      - my-mongo-cluster
+
+  mongodb3:
+    container_name: query-mongodb3
+    image: mongo:4.2
+    command: mongod --replSet RS --port 27041 --dbpath /data/db --config /resource/mongod.yml
+    ports:
+      - 27019:27041
+    volumes:
+      - ./mongodb/mongod.yml:/resource/mongod.yml
+      - ./mongodb/data/query-mongodb3:/data/db
+    networks:
+      - my-mongo-cluster
+
+networks:
+    my-mongo-cluster:
