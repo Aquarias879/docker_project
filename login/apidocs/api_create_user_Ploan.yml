@@ -1,0 +1,41 @@
+An endpoint for testing requestBody documentation.
+---
+description: User recognition, request Token and public keys
+parameters:
+  - name: body
+    in: body
+    required: true
+    schema:
+      required:
+        - username
+        - password
+        - to
+        - amount
+      properties:
+        username:  
+          type: string
+          description: username
+          example: "sam"
+        password:
+          type: string
+          example: "sam1234"
+        to:
+          type: string
+          description: own_account
+          example: "sam"
+        amount:
+          type: int
+          description: amount_of_loan_wanna_pay
+          example: 100
+
+responses:
+  200:
+    description: create successed
+    schema:
+      properties:
+        success:
+          type: boolean
+          example: True
+        message:
+          type: string
+          example: login success

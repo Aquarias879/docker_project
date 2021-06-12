@@ -1,0 +1,5 @@
+pika
+flask
+pymongo
+bcrypt
+flasgger
