@@ -1,0 +1,39 @@
+//Replicaset Configuration
+config = {
+   _id : "RS",
+   members: [
+      { _id: 0, host: "insert-mongodb1:27041" },
+      { _id: 1, host: "query-mongodb2:27041" },
+      { _id: 2, host: "query-mongodb3:27041" }
+   ]
+};
+
+//compressed via: https://jscompress.com/
+config={_id:"RS",members:[{_id:0,host:"insert-mongodb1:27041"},{_id:1,host:"query-mongodb2:27041"},{_id:2,host:"query-mongodb3:27041"}]};
+
+//step by step
+1. Login to mongodb PRIMARY docker container
+sudo docker exec -ti insert-mongodb1 bash
+
+2. Activate mongo CLI
+mongo insert-mongdb1:27041
+
+3. (inside mongo cli) Set Variable config using replicaset Configuration above
+config={_id:"RS",members:[{_id:0,host:"insert-mongodb1:27041"},{_id:1,host:"query-mongodb2:27041"},{_id:2,host:"query-mongodb3:27041"}]};
+
+4. (inside mongo cli) Initialize the config
+rs.initiate(config)
+
+5. (inside mongo cli) Check if the config is successful
+rs.config()
+
+6. check priority
+cfg = rs.conf();
+
+7. change priority to 1 , 2 and 0
+cfg.members[1].priority = 0;
+
+8. reboot
+rs.reconfig(cfg);
+
+9. Quit from docker container
