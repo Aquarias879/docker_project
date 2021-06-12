@@ -1,37 +1,37 @@
 # Docker Command
 
-#build compose
+# build compose
 ```sh
 $ docker-Compose build
 ```
 
-#run docker compose
+# run docker compose
 ```sh
 $ docker-compose up
 ```
 
-#stop docker
+# stop docker
 ```sh
 $ docker-compose down
 ```
 
-#access a running container
+# access a running container
 ```sh
 $ dokcer exec -it $service id bin/bash
 ```
 
-#start only 1 service
+# start only 1 service
 ```sh
 $ docker start $service id
 ```
 
-#close only 1 service
+# close only 1 service
 ```sh
 $ docker stop $service id
 ```
-#apidocs here
+# apidocs here
 ```sh
 http://localhost:5000/apidocs
 ```
-
+# first time should to do replication 
 
