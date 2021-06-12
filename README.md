@@ -17,7 +17,7 @@ $ docker-compose down
 
 # access a running container
 ```sh
-$ dokcer exec -it $service id bin/bash
+$ docker exec -it $service id bin/bash
 ```
 
 # start only 1 service
