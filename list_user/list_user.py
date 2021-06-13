@@ -31,15 +31,18 @@ def listuser():
     users = mydb["key"]
 
     db_list = []
-    for x in users.find({},{"Password" : 0, "Own" : 0 , "Debt" : 0 }):
-        data = str(x).replace("ObjectId(","")
-        data = data.replace(")","")
-        data = data.replace("'",'"')
-        data = data.replace('"data": "{','')
-        data = data.replace('}"','')
-        db_list.append(json.loads(data))
+    for x in users.find():
+        db_list.append({'id':str(x['_id']),'Username' : x['Username']})
+    return jsonify(db_list)
+    #for x in users.find({},{"Password" : 0, "Own" : 0 , "Debt" : 0 }):
+        #data = str(x).replace("ObjectId(","")
+        #data = data.replace(")","")
+        #data = data.replace("'",'"')
+        #data = data.replace('"data": "{','')
+        #data = data.replace('}"','')
+        #db_list.append(json.loads(data))
 
-    return json.dumps(db_list)
+    #return json.dumps(db_list)
 
 @app.route('/')
 def index():
